@@ -22,7 +22,8 @@ defmodule SampleCluster.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug_cowboy, "~> 2.5.2"}
+      {:plug_cowboy, "~> 2.5.2"},
+      {:libcluster, "~> 3.3.1"}
     ]
   end
 end
