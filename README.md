@@ -1,21 +1,34 @@
 # SampleCluster
 
-**TODO: Add description**
+Распределенные процессы средствами [`libcluster`](https://hexdocs.pm/libcluster) и [`horde`](https://hexdocs.pm/horde).
 
-## Installation
+Для формирования кластера используется стратегия [`Cluster.Strategy.Gossip`](https://hexdocs.pm/libcluster/Cluster.Strategy.Gossip.html#content).
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sample_cluster` to your list of dependencies in `mix.exs`:
+`Horde.Registry` и `Horde.DynamicSupervisor` используют динамическое определение Elixir узлов с помощью опции [`members: :auto`](https://hexdocs.pm/horde/libcluster.html#automatic-cluster-membership).
 
-```elixir
-def deps do
-  [
-    {:sample_cluster, "~> 0.1.0"}
-  ]
-end
+## Как запустить
+
+```
+> PORT=4000 iex --sname node-1 -S mix
+> PORT=4001 iex --sname node-2 -S mix
+> PORT=4002 iex --sname node-3 -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/sample_cluster>.
+Эндпоинт `/{user}/account` возвращает `pid` созданного процесса для конкретного пользователя.
 
+Например:
+
+```
+curl 'localhost:4001/bob/account
+#PID<0.427.0>
+```
+
+После того как процесс для пользователя будет поднят, можно читать и писать в него данные:
+
+```
+Account.put("bob", :acc_id, 121)
+:ok
+
+Account.get("bob", :acc_id)
+121
+```
