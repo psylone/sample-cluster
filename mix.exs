@@ -23,7 +23,8 @@ defmodule SampleCluster.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.5.2"},
-      {:libcluster, "~> 3.3.1"}
+      {:libcluster, "~> 3.3.1"},
+      {:horde, "~> 0.8.7"}
     ]
   end
 end

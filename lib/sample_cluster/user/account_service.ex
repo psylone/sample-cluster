@@ -1,22 +1,23 @@
 defmodule SampleCluster.User.AccountService do
-  alias SampleCluster.User.Account
+  alias SampleCluster.User.{
+    Account,
+    AccountSupervisor
+  }
 
   def call(%{"user" => user}) do
-    pid =
-      user
-      |> String.to_atom
-      |> start_user_account_process
-
-    %{pid: pid}
-  end
-
-  defp start_user_account_process(user) do
-    case Account.start_link(name: user) do
+    case start_user_account_process(user) do
       {:ok, pid} ->
         pid
 
       {:error, {:already_started, pid}} ->
         pid
     end
+  end
+
+  defp start_user_account_process(user) do
+    Horde.DynamicSupervisor.start_child(
+      AccountSupervisor,
+      {Account, name: user}
+    )
   end
 end

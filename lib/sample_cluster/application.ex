@@ -9,6 +9,8 @@ defmodule SampleCluster.Application do
   def start(_type, _args) do
     children = [
       {Cluster.Supervisor, cluster_options()},
+      {Horde.Registry, name: SampleCluster.User.AccountRegistry, keys: :unique, members: :auto},
+      {Horde.DynamicSupervisor, name: SampleCluster.User.AccountSupervisor, strategy: :one_for_one, members: :auto},
       {Plug.Cowboy, plug_options()}
     ]
 
