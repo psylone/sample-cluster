@@ -7,9 +7,9 @@ defmodule SampleCluster.Router do
   plug :dispatch
 
   get "/:user/account" do
-    %{} = AccountService.call(conn.params)
+    %{pid: pid} = AccountService.call(conn.params)
 
-    send_resp(conn, 200, "")
+    send_resp(conn, 200, inspect(pid))
   end
 
   match _ do
