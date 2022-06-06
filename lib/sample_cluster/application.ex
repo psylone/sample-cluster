@@ -8,8 +8,7 @@ defmodule SampleCluster.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: SampleCluster.Worker.start_link(arg)
-      # {SampleCluster.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: SampleCluster.Router}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
